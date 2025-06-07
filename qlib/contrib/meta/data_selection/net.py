@@ -51,7 +51,7 @@ class PredNet(nn.Module):
         super().__init__()
         self.step = step
         self.twm = TimeWeightMeta(hist_step_n=hist_step_n, clip_weight=clip_weight, clip_method=clip_method)
-        self.init_paramters(hist_step_n)
+        self.init_parameters(hist_step_n)
         self.alpha = alpha
 
     def get_sample_weights(self, X, time_perf, time_belong, ignore_weight=False):
@@ -69,6 +69,6 @@ class PredNet(nn.Module):
         theta = torch.inverse(X_w @ X + self.alpha * torch.eye(X_w.shape[0])) @ X_w @ y
         return X_test @ theta, weights
 
-    def init_paramters(self, hist_step_n):
+    def init_parameters(self, hist_step_n):
         self.twm.linear.weight.data = 1.0 / hist_step_n + self.twm.linear.weight.data * 0.01
         self.twm.linear.bias.data.fill_(0.0)
